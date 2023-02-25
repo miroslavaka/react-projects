@@ -6,10 +6,10 @@ const List = ({ data }) => {
   return (
     <>
       {data.map((item) => {
-        const { image, name, age } = item;
+        const { id, image, name, age } = item;
         return (
-          <article className="person">
-            <img src={image} alt="" />
+          <article key={id} className="person">
+            <img src={image} alt={name} />
             <div>
               <h4>{name}</h4>
               <p>{age} years</p>

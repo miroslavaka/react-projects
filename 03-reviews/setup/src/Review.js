@@ -6,20 +6,39 @@ const Review = () => {
   const [current, setCurrent] = useState(0);
   //as we want to show currently 1st person, destructure 1st person:
   const { name, job, image, text } = people[current];
-  console.log(name);
 
-  const length = people.length;
+  const checkNumber = (number) => {
+    if (number > people.length - 1) {
+      return 0;
+    }
+    if (number < 0) {
+      return people.length - 1;
+    }
+    return number;
+  };
 
   const nextSlide = () => {
-    setCurrent(current === length - 1 ? 0 : current + 1);
+    //setCurrent(current === people.length - 1 ? 0 : current + 1);
+    setCurrent((current) => {
+      let nextPerson = current + 1;
+      return checkNumber(nextPerson);
+    });
   };
 
   const prevSlide = () => {
-    setCurrent(current === 0 ? length - 1 : current - 1);
+    //setCurrent(current === 0 ? people.length - 1 : current - 1);
+    setCurrent((current) => {
+      let prevPerson = current - 1;
+      return checkNumber(prevPerson);
+    });
   };
 
   const randomSlide = () => {
-    setCurrent(Math.floor(Math.random() * length));
+    let randomNumber = Math.floor(Math.random() * people.length);
+    if (randomNumber === current) {
+      randomNumber = current + 1;
+    }
+    setCurrent(checkNumber(randomNumber));
   };
 
   return (
@@ -36,8 +55,12 @@ const Review = () => {
       <p className="info">{text}</p>
 
       <div className="button-container">
-        <FaChevronLeft className="prev-btn" onClick={prevSlide} />
-        <FaChevronRight className="next-btn" onClick={nextSlide} />
+        <button className="prev-btn" onClick={prevSlide}>
+          <FaChevronLeft />
+        </button>
+        <button className="next-btn" onClick={nextSlide}>
+          <FaChevronRight />
+        </button>
       </div>
       <button className="random-btn" onClick={randomSlide}>
         suprise me

@@ -4,44 +4,32 @@ import Categories from './Categories';
 import items from './data';
 import './index.css';
 
+const allCategories = ['all', ...new Set(items.map((item) => item.category))];
+console.log('allCategories: ', allCategories);
+
 function App() {
+  const [menuItems, setMenuItems] = useState(items);
+  const [categories, setCategories] = useState(allCategories);
+
+  const filterItems = (category) => {
+    if (category === 'all') {
+      setMenuItems(items);
+      return;
+    }
+    const newItems = items.filter((item) => category === item.category);
+    console.log('newItems: ', newItems);
+    setMenuItems(newItems);
+  };
+
   return (
     <main>
-      <section className="menu">
+      <section className="menu section">
         <div className="title">
           <h2>our menu</h2>
           <div className="title-underline"></div>
         </div>
-        <div className="btn-container">
-          <button type="button" className="btn">
-            All
-          </button>
-          <button type="button" className="btn">
-            Breakfast
-          </button>
-          <button type="button" className="btn">
-            Lunch
-          </button>
-          <button type="button" className="btn">
-            Shakes
-          </button>
-        </div>
-        <div className="section-center">
-          {items.map((item) => {
-            return (
-              <article className="menu-item">
-                <img className="img" src={item.img}></img>
-                <div className="item-info">
-                  <header>
-                    <h5>{item.title}</h5>
-                    <span className="item-price">$ {item.price}</span>
-                  </header>
-                  <p className="item-text">{item.desc}</p>
-                </div>
-              </article>
-            );
-          })}
-        </div>
+        <Categories categories={categories} filterItems={filterItems} />
+        <Menu items={menuItems} />
       </section>
     </main>
   );
